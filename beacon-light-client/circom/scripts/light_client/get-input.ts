@@ -2,7 +2,7 @@ import { writeFileSync } from 'fs';
 import path from 'path';
 import { getFilesInDir } from '../../../../libs/typescript/ts-utils/data';
 import { ZHEAJIANG_TESNET } from '../../../solidity/test/utils/constants';
-import { getProofInput } from './get_ligth_client_input';
+import { getProofInput } from './get_light_client_input';
 
 (async () => {
   const UPDATES = getFilesInDir(path.join(__dirname, 'updates'));

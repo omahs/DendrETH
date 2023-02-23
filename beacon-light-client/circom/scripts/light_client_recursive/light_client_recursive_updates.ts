@@ -30,7 +30,7 @@ let period = 291;
 
 (async () => {
   for (let update of UPDATES.slice(1)) {
-    console.log('Proof convertion...');
+    console.log('Proof conversion...');
     await promiseExec(
       `python ${path.join(__dirname, 'proof_converter.py')} ${proofsDir}/proof${
         period - 1

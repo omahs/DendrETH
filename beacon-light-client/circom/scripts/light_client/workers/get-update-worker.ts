@@ -13,12 +13,12 @@ import {
   UPDATE_POLING_QUEUE,
 } from '../relayer-helper';
 import { Tree } from '@chainsafe/persistent-merkle-tree';
-import { getProofInput } from '../get_ligth_client_input';
+import { getProofInput } from '../get_light_client_input';
 import { ZHEAJIANG_TESNET } from '../../../../solidity/test/utils/constants';
 import { bytesToHex } from '../../../../../libs/typescript/ts-utils/bls';
 import * as config from '../config.json';
 
-const proofGenertorQueue = new Queue<ProofInputType>(PROOF_GENERATOR_QUEUE, {
+const proofGeneratorQueue = new Queue<ProofInputType>(PROOF_GENERATOR_QUEUE, {
   connection: {
     host: config.redisHost,
     port: config.redisPort,
@@ -67,7 +67,7 @@ new Worker<void>(
       JSON.stringify(proofInput),
     );
 
-    proofGenertorQueue.add('proofGenerate', {
+    proofGeneratorQueue.add('proofGenerate', {
       prevUpdateSlot: Number(prevUpdate.data.attested_header.beacon.slot),
       updateSlot: Number(update.data.attested_header.beacon.slot),
       proofInput: proofInput,
@@ -101,7 +101,7 @@ async function extendPrevUpdateWithSyncCommittee(
   const beaconStateView = ssz.capella.BeaconState.toViewDU(beaconState);
   const tree = new Tree(beaconStateView.node);
 
-  const prevUpdateFinalizedSyncCommmitteePeriod = computeSyncCommitteePeriodAt(
+  const prevUpdateFinalizedSyncCommitteePeriod = computeSyncCommitteePeriodAt(
     Number(prevUpdate.data.finalized_header.beacon.slot),
   );
   const currentSyncCommitteePeriod =
@@ -110,7 +110,7 @@ async function extendPrevUpdateWithSyncCommittee(
   const sync_committee_branch = tree
     .getSingleProof(
       ssz.capella.BeaconState.getPathInfo([
-        prevUpdateFinalizedSyncCommmitteePeriod === currentSyncCommitteePeriod
+        prevUpdateFinalizedSyncCommitteePeriod === currentSyncCommitteePeriod
           ? 'current_sync_committee'
           : 'next_sync_committee',
       ]).gindex,
@@ -120,7 +120,7 @@ async function extendPrevUpdateWithSyncCommittee(
   prevUpdate.data['sync_committee_branch'] = sync_committee_branch;
   prevUpdate.data['sync_committee'] = {
     pubkeys: beaconState[
-      prevUpdateFinalizedSyncCommmitteePeriod === currentSyncCommitteePeriod
+      prevUpdateFinalizedSyncCommitteePeriod === currentSyncCommitteePeriod
         ? 'currentSyncCommittee'
         : 'nextSyncCommittee'
     ].pubkeys.map(x => '0x' + bytesToHex(x)),
@@ -128,7 +128,7 @@ async function extendPrevUpdateWithSyncCommittee(
       '0x' +
       bytesToHex(
         beaconState[
-          prevUpdateFinalizedSyncCommmitteePeriod === currentSyncCommitteePeriod
+          prevUpdateFinalizedSyncCommitteePeriod === currentSyncCommitteePeriod
             ? 'currentSyncCommittee'
             : 'nextSyncCommittee'
         ].aggregatePubkey,

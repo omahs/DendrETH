@@ -29,9 +29,9 @@ proofGeneratorEvents.on('completed', async (job, data) => {
   // here will publish proof on chain
   while (true) {
     const state: State = JSON.parse(await readFile('state.json', 'utf-8'));
-    let reutrnValue = job.returnvalue as any;
-    if (reutrnValue.prevUpdateSlot === state.lastUpdateOnChain) {
-      state.lastUpdateOnChain = reutrnValue.updateSlot;
+    let returnValue = job.returnvalue as any;
+    if (returnValue.prevUpdateSlot === state.lastUpdateOnChain) {
+      state.lastUpdateOnChain = returnValue.updateSlot;
       await writeFile('state.json', JSON.stringify(state));
       console.log('WORK DONE');
       return;
