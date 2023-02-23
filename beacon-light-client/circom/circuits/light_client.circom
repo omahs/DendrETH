@@ -60,6 +60,7 @@ template LightClient(N) {
   signatureSlotGreaterThanNext.in[1] <== nextHeaderSlot;
   signatureSlotGreaterThanNext.out === 1;
 
+  // is nextHeader newer then the last finalized header?
   component nextHeaderSlotGreaterThanPrevFinalized = GreaterThan(64);
   nextHeaderSlotGreaterThanPrevFinalized.in[0] <== nextHeaderSlot;
   nextHeaderSlotGreaterThanPrevFinalized.in[1] <== prevHeaderFinalizedSlot;
@@ -124,6 +125,7 @@ template LightClient(N) {
   isValidMerkleBranchPrevHeaderFinalizedStateRoot.out === 1;
 
 
+  // nextHeaderSlotValidBranch
   component isValidMerkleBranchNextHeaderSlot = IsValidMerkleBranch(3);
 
   for(var i = 0; i < 256; i++) {
@@ -138,7 +140,6 @@ template LightClient(N) {
   }
 
   isValidMerkleBranchNextHeaderSlot.index <== 8;
-  isValidMerkleBranchNextHeaderSlot.out === 1;
 
 
   component bitmaskContainsOnlyBools = BitmaskContainsOnlyBools(N);
@@ -238,7 +239,6 @@ template LightClient(N) {
 
   isValidMerkleBranchFinality.index <== 745;
 
-  isValidMerkleBranchFinality.out === 1;
 
   component isValidMerkleBranchExecution = IsValidMerkleBranch(11);
 
@@ -255,7 +255,6 @@ template LightClient(N) {
 
   isValidMerkleBranchExecution.index <== 3218;
 
-  isValidMerkleBranchExecution.out === 1;
 
   component isValidMerkleBranchSyncCommittee = IsValidMerkleBranch(5);
 
@@ -279,7 +278,6 @@ template LightClient(N) {
 
   isValidMerkleBranchSyncCommittee.index <== 55 - arePeriodsEqual.out;
 
-  isValidMerkleBranchSyncCommittee.out === 1;
 
   component aggregateKeys = AggregateKeysBitmask(N);
 

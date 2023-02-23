@@ -9,8 +9,6 @@ template IsValidMerkleBranch(N) {
   signal input root[256];
   signal input index;
 
-  signal output out;
-
   component hashers[N];
   component isZero[N];
 
@@ -46,5 +44,5 @@ template IsValidMerkleBranch(N) {
   isEqual[N].in[0] <== N;
   isEqual[N].in[1] <== counter;
 
-  out <== isEqual[N].out;
+  isEqual[N].out === 1;
 }
