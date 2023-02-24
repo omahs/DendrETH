@@ -1,6 +1,6 @@
 pragma circom 2.0.3;
 
-include "sync_commitee_hash_tree_root.circom";
+include "sync_committee_hash_tree_root.circom";
 include "compress.circom";
 include "aggregate_bitmask.circom";
 include "is_supermajority.circom";
@@ -186,7 +186,7 @@ template LightClient(N) {
     hashToField.in[i] <== computeSigningRoot.signing_root[i];
   }
 
-  component hasher = SyncCommiteeHashTreeRoot(N);
+  component hasher = SyncCommitteeHashTreeRoot(N);
   component compress[N];
 
   for(var i = 0; i < N; i++) {
