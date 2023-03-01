@@ -2,6 +2,7 @@ pragma circom 2.0.3;
 
 include "../../../node_modules/circomlib/circuits/comparators.circom";
 
+// This template checks if a bit array contains at least 2/3 1s
 template IsSuperMajority(N) {
   signal input bitmask[N];
 

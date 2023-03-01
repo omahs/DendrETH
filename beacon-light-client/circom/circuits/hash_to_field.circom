@@ -6,6 +6,7 @@ include "../../../vendor/circom-pairing/circuits/bigint.circom";
 template HashToField() {
   var K = 7;
   signal input in[256];
+
   signal output out[2][2][K];
 
   component expand_message = ExpandMessage();

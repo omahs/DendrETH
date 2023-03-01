@@ -3,6 +3,7 @@ pragma circom 2.0.3;
 include "../../../node_modules/circomlib/circuits/sha256/sha256.circom";
 include "hash_two.circom";
 
+// This template creates a merkle root from a N leaf tree
 template HashTreeRoot(N) {
   signal input leaves[N][256];
 

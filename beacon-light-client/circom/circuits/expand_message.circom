@@ -3,8 +3,10 @@ pragma circom 2.0.3;
 include "../../../node_modules/circomlib/circuits/sha256/sha256.circom";
 include "../../../node_modules/circomlib/circuits/bitify.circom";
 
+// This template expands a 256 bit input to a 2048 bit output
 template ExpandMessage() {
   signal input in[256];
+
   signal output out[2048];
 
   component b_0Sha = Sha256(1144);

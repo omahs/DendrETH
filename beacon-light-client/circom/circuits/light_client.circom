@@ -66,25 +66,30 @@ template LightClient(N) {
   nextHeaderSlotGreaterThanPrevFinalized.in[1] <== prevHeaderFinalizedSlot;
   nextHeaderSlotGreaterThanPrevFinalized.out === 1;
 
+
   component signatureSlotSyncCommitteePeriodLessThan = LessEqThan(64);
   signatureSlotSyncCommitteePeriodLessThan.in[0] <== signatureSlotSyncCommitteePeriod * 8192;
   signatureSlotSyncCommitteePeriodLessThan.in[1] <== signatureSlot;
   signatureSlotSyncCommitteePeriodLessThan.out === 1;
+
 
   component signatureSlotSyncCommitteePeriodGreaterThan = GreaterEqThan(64);
   signatureSlotSyncCommitteePeriodGreaterThan.in[0] <== signatureSlotSyncCommitteePeriod * 8192;
   signatureSlotSyncCommitteePeriodGreaterThan.in[1] <== signatureSlot - 8192;
   signatureSlotSyncCommitteePeriodGreaterThan.out === 1;
 
+
   component finalizedHeaderSlotSyncCommitteePeriodLessThan = LessEqThan(64);
   finalizedHeaderSlotSyncCommitteePeriodLessThan.in[0] <== finalizedHeaderSlotSyncCommitteePeriod * 8192;
   finalizedHeaderSlotSyncCommitteePeriodLessThan.in[1] <== prevHeaderFinalizedSlot;
   finalizedHeaderSlotSyncCommitteePeriodLessThan.out === 1;
 
+
   component finalizedHeaderSlotSyncCommitteePeriodGreaterThan = GreaterEqThan(64);
   finalizedHeaderSlotSyncCommitteePeriodGreaterThan.in[0] <== finalizedHeaderSlotSyncCommitteePeriod * 8192;
   finalizedHeaderSlotSyncCommitteePeriodGreaterThan.in[1] <== prevHeaderFinalizedSlot - 8192;
   finalizedHeaderSlotSyncCommitteePeriodGreaterThan.out === 1;
+
 
   component prevHeaderFinalizedSlotSSZ = SSZNum(64);
   prevHeaderFinalizedSlotSSZ.in <== prevHeaderFinalizedSlot;
@@ -124,7 +129,6 @@ template LightClient(N) {
   isValidMerkleBranchPrevHeaderFinalizedStateRoot.index <== 11;
   isValidMerkleBranchPrevHeaderFinalizedStateRoot.out === 1;
 
-
   // nextHeaderSlotValidBranch
   component isValidMerkleBranchNextHeaderSlot = IsValidMerkleBranch(3);
 
@@ -147,8 +151,8 @@ template LightClient(N) {
   for(var i = 0; i < N; i++) {
     bitmaskContainsOnlyBools.bitmask[i] <== bitmask[i];
   }
-  // Check if a supermajority of the ?validators signed the ???
-  // aka check if there are 2/3 or more 1s in the bitmask
+
+  // Check if a supermajority(2/3) of the ?validators signed the ???
   component isSuperMajority = IsSuperMajority(N);
 
   for(var i = 0; i < N; i++) {
@@ -156,6 +160,8 @@ template LightClient(N) {
   }
   //Check if it returns 1
   isSuperMajority.out === 1;
+
+
   component computeDomain = ComputeDomain();
 
   for(var i = 0; i < 32; i++) {
@@ -170,6 +176,7 @@ template LightClient(N) {
     computeDomain.DOMAIN_SYNC_COMMITTEE[i] <== DOMAIN_SYNC_COMMITTEE[i];
   }
 
+
   component computeSigningRoot = ComputeSigningRoot();
 
   for(var i = 0; i < 256; i++) {
@@ -180,13 +187,16 @@ template LightClient(N) {
     computeSigningRoot.domain[i] <== computeDomain.domain[i];
   }
 
+
   component hashToField = HashToField();
 
   for(var i = 0; i < 256; i++) {
     hashToField.in[i] <== computeSigningRoot.signing_root[i];
   }
 
+
   component hasher = SyncCommitteeHashTreeRoot(N);
+
   component compress[N];
 
   for(var i = 0; i < N; i++) {
@@ -242,15 +252,15 @@ template LightClient(N) {
 
   component isValidMerkleBranchExecution = IsValidMerkleBranch(11);
 
-  for(var i = 0; i < 256; i++) {
-    isValidMerkleBranchExecution.leaf[i] <== execution_state_root[i];
-    isValidMerkleBranchExecution.root[i] <== finalizedHeaderRoot[i];
-  }
-
   for(var i = 0; i < 11; i++) {
     for(var j = 0; j < 256; j++) {
       isValidMerkleBranchExecution.branch[i][j] <== execution_state_root_branch[i][j];
     }
+  }
+
+  for(var i = 0; i < 256; i++) {
+    isValidMerkleBranchExecution.leaf[i] <== execution_state_root[i];
+    isValidMerkleBranchExecution.root[i] <== finalizedHeaderRoot[i];
   }
 
   isValidMerkleBranchExecution.index <== 3218;
@@ -293,7 +303,7 @@ template LightClient(N) {
     aggregateKeys.bitmask[i] <== bitmask[i];
   }
 
-  // bls.Verify
+  // This is bls.Verify in the spec
   component verify = CoreVerifyPubkeyG1(55, K);
 
   for(var j = 0; j < 2; j++) {

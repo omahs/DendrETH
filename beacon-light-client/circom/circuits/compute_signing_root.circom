@@ -2,6 +2,8 @@ pragma circom 2.0.3;
 
 include "compute_domain.circom";
 
+// https://github.com/ethereum/consensus-specs/blob/dev/specs/phase0/beacon-chain.md#compute_signing_root
+// Return the signing root for the corresponding signing data.
 template ComputeSigningRoot() {
   // In the "consensus-specs" they pass ssz-object(of type SSZObject) to "compute_signing_root"
   // then they hash it. We use the hash of the header(SSZObject) directly

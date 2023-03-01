@@ -3,6 +3,7 @@ pragma circom 2.0.3;
 include "hash_two.circom";
 include "../../../node_modules/circomlib/circuits/comparators.circom";
 
+// This template checks if a leaf is part of a merkle tree where index is path to the root and branch are its neighbours
 template IsValidMerkleBranch(N) {
   signal input branch[N][256];
   signal input leaf[256];
@@ -28,21 +29,14 @@ template IsValidMerkleBranch(N) {
       hashers[i].in[0][j] <== (current[j] - branch[i][j]) * isZero[i].out + branch[i][j];
       hashers[i].in[1][j] <== (branch[i][j] - current[j]) * isZero[i].out + current[j];
     }
-  }
 
-  var counter = 0;
-  component isEqual[N+1];
+  component isEqual[N];
+
   for(var i = 0; i < N; i++) {
     isEqual[i] = IsEqual();
     isEqual[i].in[0] <== root[i];
     isEqual[i].in[1] <== hashers[N-1].out[i];
-    counter += isEqual[i].out;
+    isEqual[i].out == 1;
   }
-
-  isEqual[N] = IsEqual();
-
-  isEqual[N].in[0] <== N;
-  isEqual[N].in[1] <== counter;
-
-  isEqual[N].out === 1;
+  }
 }
