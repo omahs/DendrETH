@@ -12,18 +12,18 @@ template ComputeSigningRoot() {
 
   signal output signing_root[256];
 
-  component hashTwo = HashTwo();
+  component hashTwo256 = HashTwo256();
 
   for(var i = 0; i < 256; i++) {
-    hashTwo.in[0][i] <== headerHash[i];
+    hashTwo256.in[0][i] <== headerHash[i];
   }
 
   for(var i = 0; i < 256; i++) {
-    hashTwo.in[1][i] <== domain[i];
+    hashTwo256.in[1][i] <== domain[i];
   }
 
 
   for(var i = 0; i < 256; i++) {
-    signing_root[i] <== hashTwo.out[i];
+    signing_root[i] <== hashTwo256.out[i];
   }
 }

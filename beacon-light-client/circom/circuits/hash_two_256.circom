@@ -1,10 +1,10 @@
 pragma circom 2.0.3;
 
-include "hash_two.circom";
+include "hash_two_256.circom";
 include "../../../node_modules/circomlib/circuits/sha256/sha256.circom";
 
 // This template hashes two 256 bit numbers into one 256 bit number, using Sha256
-template HashTwo() {
+template HashTwo256() {
   signal input in[2][256];
 
   signal output out[256];

@@ -1,6 +1,6 @@
 pragma circom 2.0.3;
 
-include "hash_two.circom";
+include "hash_two_256.circom";
 
 // https://github.com/ethereum/consensus-specs/blob/dev/specs/phase0/beacon-chain.md#compute_domain
 // Return the domain for the ``domain_type`` and ``fork_version``.
@@ -14,18 +14,18 @@ template ComputeDomain() {
 
   signal output domain[256];
 
-  component hashTwo = HashTwo();
+  component hashTwo256 = HashTwo256();
 
   for(var i = 0; i < 32; i++) {
-    hashTwo.in[0][i] <== fork_version[i];
+    hashTwo256.in[0][i] <== fork_version[i];
   }
 
   for(var i = 32; i < 256; i++) {
-    hashTwo.in[0][i] <== 0;
+    hashTwo256.in[0][i] <== 0;
   }
 
   for(var i = 0; i < 256; i++) {
-    hashTwo.in[1][i] <== GENESIS_VALIDATORS_ROOT[i];
+    hashTwo256.in[1][i] <== GENESIS_VALIDATORS_ROOT[i];
   }
 
   for(var i = 0; i < 32; i++) {
@@ -33,6 +33,6 @@ template ComputeDomain() {
   }
 
   for(var i = 32; i < 256; i++) {
-    domain[i] <== hashTwo.out[i - 32];
+    domain[i] <== hashTwo256.out[i - 32];
   }
 }

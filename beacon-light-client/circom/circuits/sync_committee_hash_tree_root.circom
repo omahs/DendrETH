@@ -42,7 +42,7 @@ template SyncCommitteeHashTreeRoot(N) {
     hash.in[i] <== 0;
   }
 
-  component hasher = HashTwo();
+  component hasher = HashTwo256();
 
   for(var i = 0; i < 256; i++) {
     hasher.in[0][i] <== hashTreeRoot.out[i];

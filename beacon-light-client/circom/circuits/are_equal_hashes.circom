@@ -2,12 +2,8 @@ pragma circom 2.0.3;
 
 include "../../../node_modules/circomlib/circuits/comparators.circom";
 
-// SameHashes
-// EqualHashes
-// AreEqualHashes
-
 // This template checks if two, two part, hashes are equal
-template IsFirst() {
+template AreEqualHashes() {
   signal input firstHash[2];
   signal input secondHash[2];
 

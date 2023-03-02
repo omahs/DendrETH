@@ -9,7 +9,7 @@ include "hash_tree_root_beacon_header.circom";
 include "compute_domain.circom";
 include "compute_signing_root.circom";
 include "hash_to_field.circom";
-include "is_first.circom";
+include "are_equal_hashes.circom";
 include "../../../vendor/circom-pairing/circuits/bls_signature.circom";
 include "../../../vendor/circom-pairing/circuits/bn254/groth16.circom";
 
@@ -249,15 +249,15 @@ template LightClientRecursive(N) {
   groth16Verifier.pubInput[2] <== prevHeaderHashNum[0];
   groth16Verifier.pubInput[3] <== prevHeaderHashNum[1];
 
-  component isFirst = IsFirst();
+  component AreEqualHashes = AreEqualHashes();
 
-  isFirst.firstHash[0] <== originator[0];
-  isFirst.firstHash[1] <== originator[1];
-  isFirst.secondHash[0] <== prevHeaderHashNum[0];
-  isFirst.secondHash[1] <== prevHeaderHashNum[1];
+  AreEqualHashes.firstHash[0] <== originator[0];
+  AreEqualHashes.firstHash[1] <== originator[1];
+  AreEqualHashes.secondHash[0] <== prevHeaderHashNum[0];
+  AreEqualHashes.secondHash[1] <== prevHeaderHashNum[1];
 
   component firstORcorrect = OR();
-  firstORcorrect.a <== isFirst.out;
+  firstORcorrect.a <== AreEqualHashes.out;
   firstORcorrect.b <== groth16Verifier.out;
 
   firstORcorrect.out === 1;
