@@ -18,7 +18,6 @@ template LightClient(N) {
   signal input prevHeaderHash[256];
   signal input nextHeaderHash[256];
 
-
   signal input prevFinalizedHeaderRoot[256];
   signal input prevFinalizedHeaderRootBranch[9][256];
 
@@ -117,7 +116,7 @@ template LightClient(N) {
 
   for(var i = 0; i < 3; i++) {
     for(var j = 0; j < 256; j++) {
-      isValidMerkleBranchPrevHeaderFinalizedStateRoot.branch[i][j] <== prevHeaderFinalizedSlotBranch[i][j];
+      isValidMerkleBranchPrevHeaderFinalizedStateRoot.branch[i][j] <== prevHeaderFinalizedStateRootBranch[i][j];
     }
   }
 
