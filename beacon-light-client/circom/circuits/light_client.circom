@@ -94,15 +94,12 @@ template LightClient(N) {
   component prevHeaderFinalizedSlotSSZ = SSZNum(64);
   prevHeaderFinalizedSlotSSZ.in <== prevHeaderFinalizedSlot;
 
+
   component nextHeaderSlotSSZ = SSZNum(64);
   nextHeaderSlotSSZ.in <== nextHeaderSlot;
 
-  component isValidMerkleBranchPrevHeaderSlot = IsValidMerkleBranch(3);
 
-  for(var i = 0; i < 256; i++) {
-    isValidMerkleBranchPrevHeaderSlot.leaf[i] <== prevHeaderFinalizedSlotSSZ.out[i];
-    isValidMerkleBranchPrevHeaderSlot.root[i] <== prevFinalizedHeaderRoot[i];
-  }
+  component isValidMerkleBranchPrevHeaderSlot = IsValidMerkleBranch(3);
 
   for(var i = 0; i < 3; i++) {
     for(var j = 0; j < 256; j++) {
@@ -110,15 +107,15 @@ template LightClient(N) {
     }
   }
 
+  for(var i = 0; i < 256; i++) {
+    isValidMerkleBranchPrevHeaderSlot.leaf[i] <== prevHeaderFinalizedSlotSSZ.out[i];
+    isValidMerkleBranchPrevHeaderSlot.root[i] <== prevFinalizedHeaderRoot[i];
+  }
+
   isValidMerkleBranchPrevHeaderSlot.index <== 8;
-  isValidMerkleBranchPrevHeaderSlot.out === 1;
+
 
   component isValidMerkleBranchPrevHeaderFinalizedStateRoot = IsValidMerkleBranch(3);
-
-  for(var i = 0; i < 256; i++) {
-    isValidMerkleBranchPrevHeaderFinalizedStateRoot.leaf[i] <== prevHeaderFinalizedStateRoot[i];
-    isValidMerkleBranchPrevHeaderFinalizedStateRoot.root[i] <== prevFinalizedHeaderRoot[i];
-  }
 
   for(var i = 0; i < 3; i++) {
     for(var j = 0; j < 256; j++) {
@@ -126,21 +123,25 @@ template LightClient(N) {
     }
   }
 
+  for(var i = 0; i < 256; i++) {
+    isValidMerkleBranchPrevHeaderFinalizedStateRoot.leaf[i] <== prevHeaderFinalizedStateRoot[i];
+    isValidMerkleBranchPrevHeaderFinalizedStateRoot.root[i] <== prevFinalizedHeaderRoot[i];
+  }
+
   isValidMerkleBranchPrevHeaderFinalizedStateRoot.index <== 11;
-  isValidMerkleBranchPrevHeaderFinalizedStateRoot.out === 1;
 
   // nextHeaderSlotValidBranch
   component isValidMerkleBranchNextHeaderSlot = IsValidMerkleBranch(3);
-
-  for(var i = 0; i < 256; i++) {
-    isValidMerkleBranchNextHeaderSlot.leaf[i] <== nextHeaderSlotSSZ.out[i];
-    isValidMerkleBranchNextHeaderSlot.root[i] <== nextHeaderHash[i];
-  }
 
   for(var i = 0; i < 3; i++) {
     for(var j = 0; j < 256; j++) {
       isValidMerkleBranchNextHeaderSlot.branch[i][j] <== nextHeaderSlotBranch[i][j];
     }
+  }
+
+  for(var i = 0; i < 256; i++) {
+    isValidMerkleBranchNextHeaderSlot.leaf[i] <== nextHeaderSlotSSZ.out[i];
+    isValidMerkleBranchNextHeaderSlot.root[i] <== nextHeaderHash[i];
   }
 
   isValidMerkleBranchNextHeaderSlot.index <== 8;
@@ -158,7 +159,7 @@ template LightClient(N) {
   for(var i = 0; i < N; i++) {
     isSuperMajority.bitmask[i] <== bitmask[i];
   }
-  //Check if it returns 1
+
   isSuperMajority.out === 1;
 
 
@@ -217,6 +218,7 @@ template LightClient(N) {
     hasher.aggregatedKey[i] <== aggregatedKey[i];
   }
 
+
   component isValidMerkleBranchPrevFinality = IsValidMerkleBranch(9);
 
   for(var i = 0; i < 9; i++) {
@@ -232,7 +234,6 @@ template LightClient(N) {
 
   isValidMerkleBranchPrevFinality.index <== 745;
 
-  isValidMerkleBranchPrevFinality.out === 1;
 
   component isValidMerkleBranchFinality = IsValidMerkleBranch(9);
 

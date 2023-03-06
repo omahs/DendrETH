@@ -3,7 +3,7 @@ pragma circom 2.0.3;
 include "hash_two_256.circom";
 include "hash_tree_root.circom";
 
-// This template creates a merkle root from a tree with leafs - the 5 imputs and 3 zeros (to make it 8)
+// This template creates a merkle root from a tree with 8 leafs - the 5 imputs and 3 zeros
 template HashTreeRootBeaconHeader() {
   signal input slot[256];
   signal input proposer_index[256];
