@@ -4,8 +4,12 @@ import
   config,
   std/json,
   stew/byteutils,
-  ../../../contracts/cosmos/verifier/lib/nim/contract_interactions/helpers,
   bncurve/group_operations
+
+import std/strformat
+
+import ../../../contracts/cosmos/verifier/lib/nim/contract_interactions/helpers
+import ./types
 
 
 proc execCommand*(): string =
@@ -118,11 +122,16 @@ proc execCommand*(): string =
       echo update
     of StartUpCommand.initDataEOS:
 
-      let vkey = createVerificationKey(conf.verificationKeyPathEOS)
-      let hex = hexToByteArray[32](conf.initHeaderRootEOS)
+      let verificationKey = createVerificationKey(conf.verificationKeyPathEOS)
+      let currentHeaderHash = hexToByteArray[32](conf.initHeaderRootEOS)
       let domain = hexToByteArray[32](conf.domainEOS)
 
-      let init = "\'{\"key\":\"dendreth\", \"verification_key\": \"" & $vkey.toHex() & "\" ,\"current_header_hash\": \"" & $hex.toHex() & "\" ,\"current_slot\": \"" & $5609069 & "\" ,\"domain\": \"" & $domain.toHex() &  "\" }\'"
-      echo init
+      let initData = InitDataEOS(key: "dendreth",
+                                 verification_key: verificationKey.toHex(),
+                                 current_header_hash: currentHeaderHash.toHex(),
+                                 current_slot: 5609069,
+                                 domain: domain.toHex())
 
-let a = execCommand()
+      echo fmt("\'{%initData}\'")
+
+discard execCommand()
