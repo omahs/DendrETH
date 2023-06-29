@@ -6,7 +6,7 @@ import
   verify_utils
 
 type
-  IC* = array[5, Point[G1]]
+  IC* = array[3, Point[G1]]
 
   VerificationKey* = object
     alpha*: Point[G1]
