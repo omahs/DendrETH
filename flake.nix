@@ -45,6 +45,10 @@
       }: let
         inherit (inputs'.mcl-blockchain.legacyPackages) nix2container rust-stable craneLib-nightly;
 
+        commitment_mapper_builder = pkgs.callPackage ./libs/nix/commitment_mapper_builder {
+          craneLib = craneLib-nightly;
+        };
+
         docker-images = import ./libs/nix/docker-images.nix {inherit pkgs nix2container;};
       in {
         _module.args.pkgs = import nixpkgs {
@@ -62,6 +66,7 @@
         };
         packages =
           {
+            inherit commitment_mapper_builder;
             inherit (docker-images) docker-image-yarn;
           }
           // pkgs.lib.optionalAttrs (pkgs.hostPlatform.isLinux && pkgs.hostPlatform.isx86_64) {
