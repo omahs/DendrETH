@@ -43,7 +43,8 @@
         inputs',
         ...
       }: let
-        inherit (inputs'.mcl-blockchain.legacyPackages) nix2container rust-stable;
+        inherit (inputs'.mcl-blockchain.legacyPackages) nix2container rust-stable craneLib-nightly;
+
         docker-images = import ./libs/nix/docker-images.nix {inherit pkgs nix2container;};
       in {
         _module.args.pkgs = import nixpkgs {
