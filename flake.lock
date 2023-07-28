@@ -127,11 +127,11 @@
         "rust-overlay": "rust-overlay"
       },
       "locked": {
-        "lastModified": 1690209238,
-        "narHash": "sha256-DxShtHY/A2stcCoFrjmgTM07iAn1DzclGLi6t4Ylei4=",
+        "lastModified": 1690545075,
+        "narHash": "sha256-/RtsdVxQfmdOTuLFFAwzfmMYgQYBn1aBttG8NLIeHFQ=",
         "owner": "metacraft-labs",
         "repo": "nix-blockchain-development",
-        "rev": "b9bd6bd6079237bb98e6a1c8be4e04cfdd400f7a",
+        "rev": "3326bedf976afb94f46b9deec0750f9058e55925",
         "type": "github"
       },
       "original": {

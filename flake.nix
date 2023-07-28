@@ -43,7 +43,16 @@
         inputs',
         ...
       }: let
-        inherit (inputs'.mcl-blockchain.legacyPackages) nix2container rust-stable craneLib-nightly;
+        inherit (inputs'.mcl-blockchain.legacyPackages) nix2container rust-stable pkgs-with-rust-overlay;
+
+        crane = mcl-blockchain.inputs.crane;
+
+        rust-nightly = pkgs-with-rust-overlay.rust-bin.nightly."2023-06-12".default.override {
+          extensions = ["rust-src"];
+          targets = ["wasm32-wasi" "wasm32-unknown-unknown"];
+        };
+
+        craneLib-nightly = (crane.mkLib pkgs).overrideToolchain rust-nightly;
 
         commitment_mapper_builder = pkgs.callPackage ./libs/nix/commitment_mapper_builder {
           craneLib = craneLib-nightly;
@@ -72,7 +81,7 @@
           // pkgs.lib.optionalAttrs (pkgs.hostPlatform.isLinux && pkgs.hostPlatform.isx86_64) {
             inherit (docker-images) docker-image-all;
           };
-        devShells.default = import ./shell.nix {inherit pkgs rust-stable;};
+        devShells.default = import ./shell.nix {inherit pkgs rust-stable rust-nightly;};
         devShells.light-client = import ./libs/nix/shell-with-light-client.nix {inherit pkgs rust-stable;};
       };
     };
