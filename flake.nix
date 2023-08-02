@@ -54,7 +54,7 @@
 
         craneLib-nightly = (crane.mkLib pkgs).overrideToolchain rust-nightly;
 
-        commitment_mapper_builder = pkgs.callPackage ./libs/nix/commitment_mapper_builder {
+        circuits_executables = pkgs.callPackage ./libs/nix/circuits_executables {
           craneLib = craneLib-nightly;
         };
 
@@ -75,7 +75,6 @@
         };
         packages =
           {
-            inherit commitment_mapper_builder;
             inherit (docker-images) docker-image-yarn;
           }
           // pkgs.lib.optionalAttrs (pkgs.hostPlatform.isLinux && pkgs.hostPlatform.isx86_64) {
